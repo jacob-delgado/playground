@@ -2,8 +2,9 @@ package http
 
 import (
 	"fmt"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func hello(w http.ResponseWriter, req *http.Request) {
@@ -23,5 +24,5 @@ func Serve() {
 	http.HandleFunc("/headers", headers)
 	http.Handle("/metrics", promhttp.Handler())
 
-	http.ListenAndServe(":8090", nil)
+	_ = http.ListenAndServe(":8090", nil)
 }
