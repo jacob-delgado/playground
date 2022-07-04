@@ -2,9 +2,8 @@ package http
 
 import (
 	"fmt"
-	"net/http"
-
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"net/http"
 )
 
 func hello(w http.ResponseWriter, req *http.Request) {
@@ -19,10 +18,10 @@ func headers(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func Serve() {
+func Serve(errCh chan error) {
 	http.HandleFunc("/hello", hello)
 	http.HandleFunc("/headers", headers)
 	http.Handle("/metrics", promhttp.Handler())
 
-	_ = http.ListenAndServe(":8090", nil)
+	errCh <- http.ListenAndServe(":8090", nil)
 }
