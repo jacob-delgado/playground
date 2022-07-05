@@ -29,8 +29,6 @@ func NewServer(logger *otelzap.Logger) *Server {
 
 func (s *Server) hello(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
-	_, span := s.tracer.Start(ctx, "headers")
-	defer span.End()
 
 	fmt.Fprintf(w, "hello\n")
 
@@ -41,8 +39,6 @@ func (s *Server) hello(w http.ResponseWriter, req *http.Request) {
 
 func (s *Server) headers(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
-	_, span := s.tracer.Start(ctx, "headers")
-	defer span.End()
 
 	s.logger.Ctx(ctx).Info("headers")
 
