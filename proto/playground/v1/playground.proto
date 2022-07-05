@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/jacob-delgado/playground/proto";
+
+package playground.v1;
+
+service PlaygroundService {
+  rpc GetFeature(GetFeatureRequest) returns (GetFeatureResponse) {}
+}
+
+message GetFeatureRequest {
+  string name = 1;
+}
+
+message GetFeatureResponse {
+  string name = 1;
+}
