@@ -18,4 +18,9 @@ var (
 		Name: "hello_called",
 		Help: "The total number of times hello route was called",
 	})
+
+	GetFeatureProcessed = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "get_feature_called",
+		Help: "The total number of times GetFeature grpc function was called",
+	})
 )

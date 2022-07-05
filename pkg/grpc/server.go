@@ -2,6 +2,8 @@ package grpc
 
 import (
 	"context"
+	"github.com/jacob-delgado/playground/pkg/metrics"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 
@@ -26,7 +28,9 @@ func NewServer(logger *otelzap.Logger) *Server {
 	}
 }
 
-func (s *Server) GetFeature(context.Context, *playgroundv1.GetFeatureRequest) (*playgroundv1.GetFeatureResponse, error) {
+func (s *Server) GetFeature(ctx context.Context, req *playgroundv1.GetFeatureRequest) (*playgroundv1.GetFeatureResponse, error) {
+	s.logger.Ctx(ctx).Info("GetFeature rpc call")
+	metrics.GetFeatureProcessed.Inc()
 	return &playgroundv1.GetFeatureResponse{}, nil
 }
 
@@ -40,6 +44,7 @@ func (s *Server) Serve(errCh chan error) {
 		grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
 	)
 	playgroundv1.RegisterPlaygroundServiceServer(grpcServer, s)
+	reflection.Register(grpcServer)
 
 	s.logger.Info("starting grpc server on localhost:8000")
 	errCh <- grpcServer.Serve(lis)

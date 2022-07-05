@@ -18,4 +18,9 @@ spec:
         - name: http
           containerPort: 8090
           protocol: TCP
+          appProtocol: http
+        - name: grpc
+          containerPort: 8000
+          protocol: TCP
+          appProtocol: grpc
       serviceAccountName: playground

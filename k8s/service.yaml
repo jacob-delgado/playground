@@ -11,5 +11,9 @@ spec:
     appProtocol: http
     port: 80
     targetPort: 8090
+  - name: grpc
+    appProtocol: grpc
+    port: 81
+    targetPort: 8000
   selector:
     app: playground
