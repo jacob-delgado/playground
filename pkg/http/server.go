@@ -2,21 +2,34 @@ package http
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
-	"net/http"
+	"go.opentelemetry.io/otel/trace"
 )
 
-var tracer = otel.Tracer("github.com/jacob-delgado/playground")
+type Server struct {
+	tracer trace.Tracer
+	logger *otelzap.Logger
+}
 
-func hello(w http.ResponseWriter, req *http.Request) {
+func NewServer(logger *otelzap.Logger) *Server {
+	return &Server{
+		logger: logger,
+		tracer: otel.Tracer("github.com/jacob-delgado/playground"),
+	}
+}
+
+func (s *Server) hello(w http.ResponseWriter, req *http.Request) {
 	req.Context()
 	fmt.Fprintf(w, "hello\n")
 }
 
-func headers(w http.ResponseWriter, req *http.Request) {
-	_, span := tracer.Start(req.Context(), "sleep")
+func (s *Server) headers(w http.ResponseWriter, req *http.Request) {
+	_, span := s.tracer.Start(req.Context(), "sleep")
 	defer span.End()
 
 	for name, headers := range req.Header {
@@ -26,12 +39,12 @@ func headers(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func Serve(errCh chan error) {
-	helloHandler := http.HandlerFunc(hello)
+func (s *Server) Serve(errCh chan error) {
+	helloHandler := http.HandlerFunc(s.hello)
 	wrappedHelloHandler := otelhttp.NewHandler(helloHandler, "hello")
 	http.Handle("/hello", wrappedHelloHandler)
 
-	headerHandler := http.HandlerFunc(headers)
+	headerHandler := http.HandlerFunc(s.headers)
 	wrappedHeaderHandler := otelhttp.NewHandler(headerHandler, "headers")
 	http.Handle("/headers", wrappedHeaderHandler)
 
