@@ -2,9 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: playground
+  namespace: playground
   labels:
     app: playground
 spec:
+  selector:
+    matchLabels:
+      app: playground
   replicas: 1
   template:
     metadata:
@@ -18,9 +22,7 @@ spec:
         - name: http
           containerPort: 8090
           protocol: TCP
-          appProtocol: http
         - name: grpc
           containerPort: 8000
           protocol: TCP
-          appProtocol: grpc
       serviceAccountName: playground
