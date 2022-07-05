@@ -4,11 +4,11 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/spf13/cobra"
 	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.uber.org/zap"
 
-	"github.com/spf13/cobra"
-
+	pgrpc "github.com/jacob-delgado/playground/pkg/grpc"
 	"github.com/jacob-delgado/playground/pkg/http"
 )
 
@@ -35,6 +35,9 @@ for experimentation with various tools.`,
 		errCh := make(chan error)
 		server := http.NewServer(logger)
 		go server.Serve(errCh)
+
+		pgServer := pgrpc.NewServer(logger)
+		go pgServer.Serve(errCh)
 
 		select {
 		case <-sigCh:
