@@ -7,9 +7,9 @@ metadata:
     service: playground
 spec:
   ports:
-    - name: http
-      appProtocol: http
-      port: 80
-      targetPort: 8090
+  - name: http
+    appProtocol: http
+    port: 80
+    targetPort: 8090
   selector:
     app: playground

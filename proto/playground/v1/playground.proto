@@ -2,12 +2,15 @@ syntax = "proto3";
 
 package playground.v1;
 
+import "validate/validate.proto";
+
 service PlaygroundService {
   rpc GetFeature(GetFeatureRequest) returns (GetFeatureResponse) {}
 }
 
 message GetFeatureRequest {
-  string name = 1;
+  // x must be between 5 and 10 characters, inclusive
+  string name = 1 [(validate.rules).string = {min_len: 5, max_len: 10}];
 }
 
 message GetFeatureResponse {

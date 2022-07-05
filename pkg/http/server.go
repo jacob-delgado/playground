@@ -1,11 +1,12 @@
 package http
 
 import (
-	"errors"
+	"context"
 	"fmt"
 	"net/http"
 	"strings"
 
+	playgroundv1 "github.com/jacob-delgado/playground/gen/proto/go/playground/v1"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -13,7 +14,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
-	"go.uber.org/zap"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -31,14 +32,9 @@ var (
 	})
 )
 
-func init() {
-	prometheus.MustRegister(headersProcessed)
-	prometheus.MustRegister(helloProcessed)
-}
-
 type Server struct {
-	tracer trace.Tracer
 	logger *otelzap.Logger
+	tracer trace.Tracer
 }
 
 func NewServer(logger *otelzap.Logger) *Server {
@@ -48,6 +44,10 @@ func NewServer(logger *otelzap.Logger) *Server {
 	}
 }
 
+func (s *Server) GetFeature(ctx context.Context, in *playgroundv1.GetFeatureRequest, opts ...grpc.CallOption) (*playgroundv1.GetFeatureResponse, error) {
+	return &playgroundv1.GetFeatureResponse{}, nil
+}
+
 func (s *Server) hello(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	_, span := s.tracer.Start(ctx, "headers")
@@ -55,10 +55,7 @@ func (s *Server) hello(w http.ResponseWriter, req *http.Request) {
 
 	fmt.Fprintf(w, "hello\n")
 
-	// add an event for the span with zap using otel
-	s.logger.Ctx(ctx).Error("hello",
-		zap.Error(errors.New("hello")),
-		zap.String("foo", "bar"))
+	s.logger.Ctx(ctx).Info("hello")
 
 	helloProcessed.Inc()
 }
@@ -68,10 +65,7 @@ func (s *Server) headers(w http.ResponseWriter, req *http.Request) {
 	_, span := s.tracer.Start(ctx, "headers")
 	defer span.End()
 
-	// add an event for the span with zap using otel
-	s.logger.Ctx(ctx).Error("headers",
-		zap.Error(errors.New("headers")),
-		zap.String("bar", "baz"))
+	s.logger.Ctx(ctx).Info("headers")
 
 	for name, headers := range req.Header {
 		for _, h := range headers {

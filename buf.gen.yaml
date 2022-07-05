@@ -12,3 +12,5 @@ managed:
   enabled: true
   go_package_prefix:
     default: github.com/jacob-delgado/playground/gen/proto/go
+    except:
+    - buf.build/envoyproxy/protoc-gen-validate

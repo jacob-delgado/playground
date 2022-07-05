@@ -3,6 +3,7 @@ module github.com/jacob-delgado/playground
 go 1.18
 
 require (
+	github.com/envoyproxy/protoc-gen-validate v0.1.0
 	github.com/prometheus/client_golang v1.12.2
 	github.com/spf13/cobra v1.5.0
 	github.com/uptrace/opentelemetry-go-extra/otelzap v0.1.14
