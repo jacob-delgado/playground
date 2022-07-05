@@ -29,8 +29,12 @@ func NewServer(logger *otelzap.Logger) *Server {
 }
 
 func (s *Server) GetFeature(ctx context.Context, req *playgroundv1.GetFeatureRequest) (*playgroundv1.GetFeatureResponse, error) {
+	_, span := s.tracer.Start(ctx, "GetFeature")
+	defer span.End()
+
 	s.logger.Ctx(ctx).Info("GetFeature rpc call")
 	metrics.GetFeatureProcessed.Inc()
+
 	return &playgroundv1.GetFeatureResponse{}, nil
 }
 
