@@ -2,8 +2,6 @@ package grpc
 
 import (
 	"context"
-	"github.com/jacob-delgado/playground/pkg/metrics"
-	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 
@@ -12,8 +10,10 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 
 	playgroundv1 "github.com/jacob-delgado/playground/gen/proto/go/playground/v1"
+	"github.com/jacob-delgado/playground/pkg/metrics"
 )
 
 type Server struct {

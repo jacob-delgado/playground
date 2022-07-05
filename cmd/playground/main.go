@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"log"
 	"os"
 	"os/signal"
 
@@ -8,6 +10,7 @@ import (
 	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.uber.org/zap"
 
+	"github.com/jacob-delgado/playground/pkg/config"
 	pgrpc "github.com/jacob-delgado/playground/pkg/grpc"
 	"github.com/jacob-delgado/playground/pkg/http"
 )
@@ -18,9 +21,19 @@ var rootCmd = &cobra.Command{
 	Long: `A sample application that can be used
 for experimentation with various tools.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		cfg, err := config.Init()
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer func() {
+			if err := cfg.Shutdown(context.Background()); err != nil {
+				log.Panicf("Error shutting down tracer provider: %v", err)
+			}
+		}()
+
 		zapLogger, err := zap.NewProduction()
 		if err != nil {
-			panic("could not initialize zap logger")
+			log.Panicf("could not initialize zap logger: %v", err)
 		}
 		logger := otelzap.New(zapLogger)
 		defer func() {
