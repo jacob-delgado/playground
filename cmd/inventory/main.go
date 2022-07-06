@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/jacob-delgado/playground/pkg/config"
-	pgrpc "github.com/jacob-delgado/playground/pkg/grpc"
+	"github.com/jacob-delgado/playground/pkg/grpc"
 )
 
 var rootCmd = &cobra.Command{
@@ -45,8 +45,8 @@ for experimentation with various tools.`,
 		signal.Notify(sigCh, os.Interrupt)
 
 		errCh := make(chan error)
-		pgServer := pgrpc.NewServer(logger)
-		go pgServer.Serve(errCh)
+		grpcServer := grpc.NewServer(logger)
+		go grpcServer.Serve(errCh)
 
 		select {
 		case <-sigCh:

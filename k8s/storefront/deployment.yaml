@@ -22,7 +22,4 @@ spec:
         - name: http
           containerPort: 8090
           protocol: TCP
-        - name: grpc
-          containerPort: 8000
-          protocol: TCP
       serviceAccountName: storefront

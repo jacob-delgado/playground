@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	healthv1 "github.com/jacob-delgado/playground/gen/proto/go/grpc/health/v1"
 	inventoryv1 "github.com/jacob-delgado/playground/gen/proto/go/inventory/v1"
 	"github.com/jacob-delgado/playground/pkg/metrics"
 )
@@ -26,6 +27,16 @@ func NewServer(logger *otelzap.Logger) *Server {
 		logger: logger,
 		tracer: otel.Tracer("github.com/jacob-delgado/inventory/pkg/grpc"),
 	}
+}
+
+func (s *Server) Check(ctx context.Context, req *healthv1.HealthCheckRequest) (*healthv1.HealthCheckResponse, error) {
+	return &healthv1.HealthCheckResponse{}, nil
+}
+
+func (s *Server) Watch(req *healthv1.HealthCheckRequest, srv healthv1.Health_WatchServer) error {
+	return srv.Send(&healthv1.HealthCheckResponse{
+		Status: healthv1.HealthCheckResponse_SERVING,
+	})
 }
 
 func (s *Server) GetInventory(ctx context.Context, req *inventoryv1.GetInventoryRequest) (*inventoryv1.GetInventoryResponse, error) {
@@ -44,6 +55,7 @@ func (s *Server) Serve(errCh chan error) {
 		grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
 		grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
 	)
+	healthv1.RegisterHealthServer(grpcServer, s)
 	inventoryv1.RegisterInventoryServiceServer(grpcServer, s)
 	reflection.Register(grpcServer)
 

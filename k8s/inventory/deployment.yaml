@@ -19,10 +19,11 @@ spec:
       - name: inventory
         image: jacodelg/inventory:latest
         ports:
-        - name: http
-          containerPort: 8090
-          protocol: TCP
         - name: grpc
           containerPort: 8000
           protocol: TCP
+        livenessProbe:
+          grpc:
+            port: 8000
+          initialDelaySeconds: 10
       serviceAccountName: inventory

@@ -8,10 +8,6 @@ metadata:
     service: inventory
 spec:
   ports:
-  - name: http
-    appProtocol: http
-    port: 80
-    targetPort: 8090
   - name: grpc
     appProtocol: grpc
     port: 81

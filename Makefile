@@ -1,9 +1,10 @@
-all: inventory
+all: inventory storefront
 
 .PHONY: clean
 clean:
 	rm -rf gen
 	rm inventory || true
+	rm storefront || true
 
 .PHONY: gen
 gen:
