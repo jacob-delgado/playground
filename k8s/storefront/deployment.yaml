@@ -22,8 +22,8 @@ spec:
         - name: http
           containerPort: 8090
           protocol: TCP
-        livenessProbe:
+        readinessProbe:
           httpGet:
             path: /healthz
-            port: liveness-port
+            port: 8090
       serviceAccountName: storefront
