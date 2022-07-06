@@ -9,4 +9,4 @@ gofumpt -l -w .
 golangci-lint run
 
 go mod tidy
-podman build . -t jacodelg/playground:latest
+docker build . -t jacodelg/playground:latest
