@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-package playground.v1;
+package inventory.v1;
 
 import "validate/validate.proto";
 
-service PlaygroundService {
-  rpc GetFeature(GetFeatureRequest) returns (GetFeatureResponse) {}
+service InventoryService {
+  rpc GetInventory(GetInventoryRequest) returns (GetInventoryResponse) {}
 }
 
-message GetFeatureRequest {
+message GetInventoryRequest {
   // x must be between 5 and 10 characters, inclusive
   string name = 1 [(validate.rules).string = {min_len: 5, max_len: 10}];
 }
 
-message GetFeatureResponse {
+message GetInventoryResponse {
   string name = 1;
 }

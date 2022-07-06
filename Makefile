@@ -1,9 +1,9 @@
-all: playground
+all: inventory
 
 .PHONY: clean
 clean:
 	rm -rf gen
-	rm playground || true
+	rm inventory || true
 
 .PHONY: gen
 gen:
@@ -26,10 +26,10 @@ lint: gen fmt tidy
 test: clean gen
 	go test ./... -race
 
-.PHONY: playground
-playground: clean lint test
-	GOOS=linux go build ./cmd/playground
+.PHONY: inventory
+inventory: clean lint test
+	GOOS=linux go build ./cmd/inventory
 
 .PHONY: image
 image: clean lint test
-	docker build . -t jacodelg/playground:latest
+	docker build . -t jacodelg/inventory:latest

@@ -16,7 +16,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "playground",
+	Use:   "inventory",
 	Short: "A sample application to serve files over http/grpc/xds",
 	Long: `A sample application that can be used
 for experimentation with various tools.`,
@@ -40,7 +40,7 @@ for experimentation with various tools.`,
 			_ = logger.Sync()
 		}()
 
-		logger.Info("starting playground server")
+		logger.Info("starting inventory server")
 
 		sigCh := make(chan os.Signal, 1)
 		signal.Notify(sigCh, os.Interrupt)

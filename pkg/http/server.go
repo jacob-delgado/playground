@@ -23,7 +23,7 @@ type Server struct {
 func NewServer(logger *otelzap.Logger) *Server {
 	return &Server{
 		logger: logger,
-		tracer: otel.Tracer("github.com/jacob-delgado/playground/pkg/http"),
+		tracer: otel.Tracer("github.com/jacob-delgado/inventory/pkg/http"),
 	}
 }
 

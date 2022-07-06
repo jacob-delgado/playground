@@ -40,8 +40,8 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
   golangci-lint run --timeout 10m0s ./...
 
 FROM base AS build
-RUN --mount=type=cache,target=/root/.cache/go-build GOOS=linux go build -o /out/playground ./cmd/playground
+RUN --mount=type=cache,target=/root/.cache/go-build GOOS=linux go build -o /out/inventory ./cmd/inventory
 
-FROM scratch as playground
-COPY --from=build /out/playground /
-CMD ["/playground"]
+FROM scratch as inventory
+COPY --from=build /out/inventory /
+CMD ["/inventory"]

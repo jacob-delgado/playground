@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	playgroundv1 "github.com/jacob-delgado/playground/gen/proto/go/playground/v1"
+	inventoryv1 "github.com/jacob-delgado/playground/gen/proto/go/inventory/v1"
 	"github.com/jacob-delgado/playground/pkg/metrics"
 )
 
@@ -24,15 +24,15 @@ type Server struct {
 func NewServer(logger *otelzap.Logger) *Server {
 	return &Server{
 		logger: logger,
-		tracer: otel.Tracer("github.com/jacob-delgado/playground/pkg/grpc"),
+		tracer: otel.Tracer("github.com/jacob-delgado/inventory/pkg/grpc"),
 	}
 }
 
-func (s *Server) GetFeature(ctx context.Context, req *playgroundv1.GetFeatureRequest) (*playgroundv1.GetFeatureResponse, error) {
+func (s *Server) GetInventory(ctx context.Context, req *inventoryv1.GetInventoryRequest) (*inventoryv1.GetInventoryResponse, error) {
 	s.logger.Ctx(ctx).Info("GetFeature rpc call")
 	metrics.GetFeatureProcessed.Inc()
 
-	return &playgroundv1.GetFeatureResponse{}, nil
+	return &inventoryv1.GetInventoryResponse{}, nil
 }
 
 func (s *Server) Serve(errCh chan error) {
@@ -44,7 +44,7 @@ func (s *Server) Serve(errCh chan error) {
 		grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
 		grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
 	)
-	playgroundv1.RegisterPlaygroundServiceServer(grpcServer, s)
+	inventoryv1.RegisterInventoryServiceServer(grpcServer, s)
 	reflection.Register(grpcServer)
 
 	s.logger.Info("starting grpc server on localhost:8000")

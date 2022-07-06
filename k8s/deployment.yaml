@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: playground
-  namespace: playground
+  name: inventory
+  namespace: inventory
   labels:
-    app: playground
+    app: inventory
 spec:
   selector:
     matchLabels:
-      app: playground
+      app: inventory
   replicas: 1
   template:
     metadata:
       labels:
-        app: playground
+        app: inventory
     spec:
       containers:
-      - name: playground
-        image: jacodelg/playground:latest
+      - name: inventory
+        image: jacodelg/inventory:latest
         ports:
         - name: http
           containerPort: 8090
@@ -25,4 +25,4 @@ spec:
         - name: grpc
           containerPort: 8000
           protocol: TCP
-      serviceAccountName: playground
+      serviceAccountName: inventory

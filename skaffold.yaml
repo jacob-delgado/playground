@@ -1,10 +1,10 @@
 apiVersion: skaffold/v2beta29
 kind: Config
 metadata:
-  name: playground
+  name: inventory
 build:
   artifacts:
-  - image: jacodelg/playground
+  - image: jacodelg/inventory
     docker:
       dockerfile: Dockerfile
 deploy:

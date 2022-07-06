@@ -12,7 +12,7 @@ import (
 func Init() (*trace.TracerProvider, error) {
 	resources := resource.NewWithAttributes(
 		semconv.SchemaURL,
-		semconv.ServiceNameKey.String("go-playground"),
+		semconv.ServiceNameKey.String("go-inventory"),
 		semconv.ServiceVersionKey.String("1.0.0"),
 	)
 
