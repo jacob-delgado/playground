@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storefront
+  namespace: storefront
+  labels:
+    app: storefront
+spec:
+  selector:
+    matchLabels:
+      app: storefront
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: storefront
+    spec:
+      containers:
+      - name: storefront
+        image: jacodelg/storefront:latest
+        ports:
+        - name: http
+          containerPort: 8090
+          protocol: TCP
+        - name: grpc
+          containerPort: 8000
+          protocol: TCP
+      serviceAccountName: storefront
