@@ -37,6 +37,10 @@ func (s *Server) hello(w http.ResponseWriter, req *http.Request) {
 	metrics.HelloProcessed.Inc()
 }
 
+func (s *Server) healthz(w http.ResponseWriter, req *http.Request) {
+	w.WriteHeader(200)
+}
+
 func (s *Server) headers(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 
@@ -66,6 +70,9 @@ func (s *Server) Serve(errCh chan error) {
 	headerHandler := http.HandlerFunc(s.headers)
 	wrappedHeaderHandler := otelhttp.NewHandler(headerHandler, "headers")
 	http.Handle("/headers", wrappedHeaderHandler)
+
+	healthzHandler := http.HandlerFunc(s.headers)
+	http.Handle("/healthz", healthzHandler)
 
 	http.Handle("/metrics", promhttp.Handler())
 
