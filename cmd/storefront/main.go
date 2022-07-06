@@ -11,12 +11,12 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/jacob-delgado/playground/pkg/config"
-	pgrpc "github.com/jacob-delgado/playground/pkg/grpc"
+	"github.com/jacob-delgado/playground/pkg/http"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "inventory",
-	Short: "A sample application to serve files over grpc",
+	Short: "A sample application to serve files over http",
 	Long: `A sample application that can be used
 for experimentation with various tools.`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -45,8 +45,8 @@ for experimentation with various tools.`,
 		signal.Notify(sigCh, os.Interrupt)
 
 		errCh := make(chan error)
-		pgServer := pgrpc.NewServer(logger)
-		go pgServer.Serve(errCh)
+		server := http.NewServer(logger)
+		go server.Serve(errCh)
 
 		select {
 		case <-sigCh:

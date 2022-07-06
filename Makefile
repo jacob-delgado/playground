@@ -30,6 +30,10 @@ test: clean gen
 inventory: clean lint test
 	GOOS=linux go build ./cmd/inventory
 
+.PHONY: storefront
+storefront: clean lint test
+	GOOS=linux go build ./cmd/storefront
+
 .PHONY: image
 image: clean lint test
 	docker build . -t jacodelg/inventory:latest
