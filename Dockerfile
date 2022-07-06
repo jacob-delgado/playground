@@ -42,7 +42,6 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 FROM base AS build
 RUN --mount=type=cache,target=/root/.cache/go-build GOOS=linux go build -o /out/playground ./cmd/playground
 
-# Now copy it into our base image.
-FROM scratch
+FROM scratch as playground
 COPY --from=build /out/playground /
 CMD ["/playground"]
