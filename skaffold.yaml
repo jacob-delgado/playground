@@ -4,11 +4,11 @@ metadata:
   name: playground
 build:
   artifacts:
-  - image: jacodelg/inventory
+  - image: jdelgad/inventory
     context: cmd/inventory
     docker:
       dockerfile: Dockerfile
-  - image: jacodelg/storefront
+  - image: jdelgad/storefront
     context: cmd/storefront
     docker:
       dockerfile: Dockerfile

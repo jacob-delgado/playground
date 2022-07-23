@@ -58,3 +58,12 @@ storefront: clean lint test
 .PHONY: test
 test: clean gen
 	go test ./... -race
+
+.PHONY: clean-images
+clean-images:
+	docker rmi jdelgad/inventory:latest
+	docker rmi jdelgad/storefront:latest
+
+.PHONY: prune
+prune:
+	docker system prune --all

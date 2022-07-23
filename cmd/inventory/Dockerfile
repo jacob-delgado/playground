@@ -1,7 +1,8 @@
 # syntax = docker/dockerfile:1-experimental
+ARG GOLANGCI_LINT=v1.46.2
 
 # hadolint ignore=DL3007
-FROM jacodelg/base:latest AS base
+FROM jdelgad/build-tools:latest AS base
 
 WORKDIR /go/src/github.com/jacob-delgado/playground
 COPY . /go/src/github.com/jacob-delgado/playground
@@ -13,7 +14,7 @@ WORKDIR /go/src/github.com/jacob-delgado/playground
 COPY . /go/src/github.com/jacob-delgado/playground
 
 # hadolint ignore=DL3007
-FROM jacodelg/base:latest AS buf
+FROM base AS buf
 
 RUN /usr/bin/buf generate && \
     go mod download
