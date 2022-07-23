@@ -71,7 +71,7 @@ func (s *Server) Serve(errCh chan error) {
 	wrappedHeaderHandler := otelhttp.NewHandler(headerHandler, "headers")
 	http.Handle("/headers", wrappedHeaderHandler)
 
-	healthzHandler := http.HandlerFunc(s.headers)
+	healthzHandler := http.HandlerFunc(s.healthz)
 	http.Handle("/healthz", healthzHandler)
 
 	http.Handle("/metrics", promhttp.Handler())
